@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test de clickear</title>
+<script>
+var start_time;
+var end_time;
+var num_clicks = 0;
+var timer;
+
+function start_test() {
+document.getElementById("start_button").style.display = "none";
+start_time = new Date().getTime();
+timer = setInterval(function() {
+var elapsed_time = new Date().getTime() - start_time;
+if (elapsed_time >= 10000) {
+end_test();
+} else {
+document.getElementById("timer").innerHTML = "Tiempo restante: " + ((10000 - elapsed_time) / 1000).toFixed(1) + " segundos";
+}
+}, 100);
+document.addEventListener("click", count_clicks);
+}
+
+function count_clicks() {
+num_clicks++;
+document.getElementById("num_clicks").innerHTML = "Número de clics: " + num_clicks;
+}
+
+function end_test() {
+clearInterval(timer);
+document.removeEventListener("click", count_clicks);
+end_time = new Date().getTime();
+var elapsed_time = (end_time - start_time) / 1000;
+var clicks_per_second = num_clicks / elapsed_time;
+document.getElementById("results").innerHTML = "Duración del test: " + elapsed_time.toFixed(1) + " segundos<br>" + "Clics por segundo: " + clicks_per_second.toFixed(1);
+document.getElementById("restart_button").style.display = "block";
+}
+
+function restart_test() {
+num_clicks = 0;
+start_time = 0;
+end_time = 0;
+document.getElementById("num_clicks").innerHTML = "Número de clics: 0";
+document.getElementById("timer").innerHTML = "Tiempo restante: 10.0 segundos";
+document.getElementById("results").innerHTML = "";
+document.getElementById("restart_button").style.display = "none";
+document.getElementById("start_button").style.display = "block";
+}
+</script>
+</head>
+<body>
+<h1>Test de clickear</h1>
+<p>Haz clic tantas veces como puedas en 10 segundos.</p>
+<button id="start_button" onclick="start_test()">Comenzar el test</button>
+<button id="restart_button" style="display: none;" onclick="restart_test()">Reiniciar el test</button>
+<p id="timer">Tiempo restante: 10.0 segundos</p>
+<p id="num_clicks">Número de clics: 0</p>
+<div id="results"></div>
+</body>
+</html>
